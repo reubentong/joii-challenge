@@ -11,6 +11,8 @@ func Router() *mux.Router {
 	r.HandleFunc("/item", ListItems).Methods("GET")
 	r.HandleFunc("/item/{id}", ListItems).Methods("GET")
 	r.HandleFunc("/order", CreateOrder).Methods("POST")
-	r.HandleFunc("/order/{id}/addItem{id}", AddItemToOrder).Methods("POST")
+	//not really a fan of this url pattern, add item with no (item id) might be better as im passing the Orderitem anyway
+	//probably a better way to do this
+	r.HandleFunc("/order/{orderId}/addItem/{itemId}", AddItemToOrder).Methods("POST")
 	return r
 }
