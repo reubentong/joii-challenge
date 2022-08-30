@@ -3,6 +3,7 @@ package api
 import (
 	"encoding/json"
 	"errors"
+	"github.com/gorilla/mux"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -15,7 +16,7 @@ type ErrorHandler interface {
 func JSONError(w http.ResponseWriter, err interface{}, code int) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	w.WriteHeader(code)
-	json.NewEncoder(w).Encode(err)
+	_ = json.NewEncoder(w).Encode(err)
 }
 
 func JSONHandleError(w http.ResponseWriter, err error) {
@@ -77,9 +78,19 @@ func CreateItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func ListItems(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
 	var response Items
 
-	response.Items = items
+	if id != "" {
+		for _, item := range items {
+			if item.Id == id {
+				response.Items = append(response.Items, item)
+			}
+		}
+	} else {
+		response.Items = items
+	}
+
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
@@ -136,6 +147,10 @@ func CreateOrder(w http.ResponseWriter, r *http.Request) {
 		JSONHandleError(w, err)
 		return
 	}
+}
+
+func AddItemToOrder(w http.ResponseWriter, r *http.Request) {
+
 }
 
 // GetPrice to grab the price of item
