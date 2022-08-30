@@ -30,9 +30,10 @@ With more time:
 
 time spent: 4hrs
 
-To run: cd into src/order-service and run: go run main.go after ensuring everything is installed
+To run: 
+cd into src/order-service and run: go run main.go after ensuring everything is installed
 
 or run with docker e.g.:
 
-docker build --tag godocker .
-docker run -p 3000:8080 -it godocker
+ docker build --tag godocker .   
+ docker run -p 3000:8080 -it godocker  
