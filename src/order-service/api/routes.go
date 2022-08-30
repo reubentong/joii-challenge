@@ -7,6 +7,8 @@ import (
 func Router() *mux.Router {
 	r := mux.NewRouter().StrictSlash(true)
 	r.HandleFunc("/item", CreateItem).Methods("POST")
-	r.HandleFunc("/item", ListItem).Methods("GET")
+	//personally would separate the below route to /items, but done as test requests
+	r.HandleFunc("/item", ListItems).Methods("GET")
+	r.HandleFunc("/order", CreateOrder).Methods("POST")
 	return r
 }

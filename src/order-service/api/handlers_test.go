@@ -11,6 +11,7 @@ import (
 
 func TestCreateItem(t *testing.T) {
 	newItem := Item{
+		Id:    "3",
 		Name:  "burger",
 		Price: 1.99,
 	}
@@ -39,6 +40,36 @@ func TestCreateItem(t *testing.T) {
 
 	var returnedBody []Item
 	if err := json.Unmarshal(data, &returnedBody); err != nil {
-		t.Errorf("Returned list of items is invalid JSON. Got: %s", data)
+		t.Errorf("returned list of items is invalid JSON. Got: %s", data)
+	}
+}
+
+func TestListItems(t *testing.T) {
+	req, err := http.NewRequest("GET", "/item", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	rr := httptest.NewRecorder()
+	http.HandlerFunc(ListItems).ServeHTTP(rr, req)
+
+	if status := rr.Code; status != http.StatusOK {
+		t.Errorf("status code error. wanted %d, got %d", http.StatusOK, status)
+	}
+
+	data, err := ioutil.ReadAll(rr.Result().Body)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	var responseItems Items
+
+	if err := json.Unmarshal(data, &responseItems); err != nil {
+		t.Errorf("returned list is invalid JSON. Got: %s", data)
+	}
+	for index, item := range responseItems.Items {
+		if item != items[index] {
+			t.Errorf("returned list is not the same as real. Expected %+v. Got %+v instead", items[index], responseItems.Items)
+		}
 	}
 }
