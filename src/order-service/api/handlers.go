@@ -43,6 +43,10 @@ func CreateItem(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func ListItem(w http.ResponseWriter, r *http.Request) {
+
+}
+
 func contains(s []string, str string) bool {
 	for _, v := range s {
 		if v == str {
