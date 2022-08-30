@@ -7,3 +7,5 @@ type Item struct {
 
 //to replicate DB
 var items []Item
+
+var itemList = []string{"burger", "chips"}
